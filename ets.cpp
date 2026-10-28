@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 
@@ -14,7 +15,6 @@ struct Kendaraan {
 };
 
 Kendaraan SlotParkir[20];
-
 int TotalCheckout = 0;
 long long TotalKeuangan = 0;
 
@@ -88,16 +88,12 @@ void MemasukanKendaraan() {
     int JamMasuk;
     int MenitMasuk;
 
-    cout << "\n========================================\n";
-    cout << "         REGISTRASI KENDARAAN\n";
-    cout << "========================================\n";
-
-    cout << "Masukkan nomor plat : ";
+    cout << "\n===== REGISTRASI KENDARAAN =====\n";
+    cout << "Masukkan nomor plat: ";
     cin >> PlatNomor;
 
     for(int i = 0; i < 20; i++) {
-        if(SlotParkir[i].ApakahPenuh == true &&
-           SlotParkir[i].PlatNomor == PlatNomor) {
+        if(SlotParkir[i].ApakahPenuh == true && SlotParkir[i].PlatNomor == PlatNomor) {
             cout << "\nKendaraan sudah terdaftar!\n";
             return;
         }
@@ -106,51 +102,48 @@ void MemasukanKendaraan() {
     int SlotTersedia = MencariSlot();
 
     if(SlotTersedia == -1) {
-        cout << "\nRegistrasi gagal. Parkiran sudah penuh!\n";
+        cout << "\nRegistrasi gagal, parkiran sudah penuh!\n";
         return;
     }
 
-    cout << "Jenis kendaraan (Motor/Mobil): ";
+    cout << "Masukkan jenis kendaraan (Motor/Mobil): ";
     cin >> JenisKendaraan;
 
     if(JenisKendaraan != "Motor" && JenisKendaraan != "Mobil") {
-        cout << "\nJenis kendaraan tidak valid!\n";
+        cout << "\nJenis kendaraan salah!\n";
         return;
     }
 
-    cout << "Jam masuk (0-23) : ";
+    cout << "Masukkan jam masuk (0-23): ";
     cin >> JamMasuk;
 
-    cout << "Menit masuk (0-59) : ";
+    cout << "Masukkan menit masuk (0-59): ";
     cin >> MenitMasuk;
 
-    if(JamMasuk < 0 || JamMasuk > 23 ||
-       MenitMasuk < 0 || MenitMasuk > 59) {
-        cout << "\nFormat waktu masuk tidak valid!\n";
+    if(JamMasuk < 0 || JamMasuk > 23 || MenitMasuk < 0 || MenitMasuk > 59) {
+        cout << "\nFormat jam masuk salah!\n";
         return;
     }
 
+    SlotParkir[SlotTersedia].ApakahPenuh = true;
     SlotParkir[SlotTersedia].PlatNomor = PlatNomor;
     SlotParkir[SlotTersedia].JenisKendaraan = JenisKendaraan;
     SlotParkir[SlotTersedia].JamMasuk = JamMasuk;
     SlotParkir[SlotTersedia].MenitMasuk = MenitMasuk;
     SlotParkir[SlotTersedia].JamKeluar = 0;
     SlotParkir[SlotTersedia].MenitKeluar = 0;
-    SlotParkir[SlotTersedia].ApakahPenuh = true;
 
     cout << "\nRegistrasi berhasil!\n";
-    cout << "----------------------------------------\n";
-    cout << "Nomor plat     : " << PlatNomor << '\n';
+    cout << "Nomor plat: " << PlatNomor << '\n';
     cout << "Jenis kendaraan: " << JenisKendaraan << '\n';
-    cout << "Jam masuk      : " << JamMasuk << ':';
+    cout << "Jam masuk: " << JamMasuk << ':';
 
     if(MenitMasuk < 10) {
         cout << '0';
     }
 
     cout << MenitMasuk << '\n';
-    cout << "Slot parkir    : " << SlotTersedia + 1 << '\n';
-    cout << "----------------------------------------\n";
+    cout << "Slot parkir: " << SlotTersedia + 1 << '\n';
 }
 
 void CheckoutKendaraan() {
@@ -158,18 +151,14 @@ void CheckoutKendaraan() {
     int MenitKeluar;
     string PlatNomor;
 
-    cout << "\n========================================\n";
-    cout << "           CHECKOUT KENDARAAN\n";
-    cout << "========================================\n";
-
-    cout << "Masukkan nomor plat : ";
+    cout << "\n===== CHECKOUT KENDARAAN =====\n";
+    cout << "Masukkan plat kendaraan: ";
     cin >> PlatNomor;
 
     int IndeksKendaraan = -1;
 
     for(int i = 0; i < 20; i++) {
-        if(SlotParkir[i].ApakahPenuh == true &&
-           SlotParkir[i].PlatNomor == PlatNomor) {
+        if(SlotParkir[i].ApakahPenuh == true && SlotParkir[i].PlatNomor == PlatNomor) {
             IndeksKendaraan = i;
             break;
         }
@@ -180,63 +169,43 @@ void CheckoutKendaraan() {
         return;
     }
 
-    cout << "Jam keluar (0-23) : ";
+    cout << "Masukkan jam keluar (0-23): ";
     cin >> JamKeluar;
 
-    cout << "Menit keluar (0-59) : ";
+    cout << "Masukkan menit keluar (0-59): ";
     cin >> MenitKeluar;
 
-    if(JamKeluar < 0 || JamKeluar > 23 ||
-       MenitKeluar < 0 || MenitKeluar > 59) {
-        cout << "\nFormat waktu keluar tidak valid!\n";
+    if(JamKeluar < 0 || JamKeluar > 23 || MenitKeluar < 0 || MenitKeluar > 59) {
+        cout << "\nFormat jam keluar salah!\n";
         return;
     }
 
-    int WaktuParkir = MenghitungWaktu(
-        SlotParkir[IndeksKendaraan].JamMasuk,
-        SlotParkir[IndeksKendaraan].MenitMasuk,
-        JamKeluar,
-        MenitKeluar
-    );
-
-    long long BiayaParkir = MenghitungTotalTarif(
-        WaktuParkir,
-        SlotParkir[IndeksKendaraan].JenisKendaraan
-    );
+    int WaktuParkir = MenghitungWaktu(SlotParkir[IndeksKendaraan].JamMasuk, SlotParkir[IndeksKendaraan].MenitMasuk, JamKeluar, MenitKeluar);
+    long long BiayaParkir = MenghitungTotalTarif(WaktuParkir, SlotParkir[IndeksKendaraan].JenisKendaraan);
 
     SlotParkir[IndeksKendaraan].JamKeluar = JamKeluar;
     SlotParkir[IndeksKendaraan].MenitKeluar = MenitKeluar;
 
-    cout << "\n========================================\n";
-    cout << "              STRUK PARKIR\n";
-    cout << "========================================\n";
-    cout << "Nomor plat      : "
-         << SlotParkir[IndeksKendaraan].PlatNomor << '\n';
-
-    cout << "Jenis kendaraan : "
-         << SlotParkir[IndeksKendaraan].JenisKendaraan << '\n';
-
-    cout << "Slot parkir     : " << IndeksKendaraan + 1 << '\n';
-
-    cout << "Jam masuk       : "
-         << SlotParkir[IndeksKendaraan].JamMasuk << ':';
+    cout << "\n===== STRUK PARKIR =====\n";
+    cout << "Nomor plat: " << SlotParkir[IndeksKendaraan].PlatNomor << '\n';
+    cout << "Jenis kendaraan: " << SlotParkir[IndeksKendaraan].JenisKendaraan << '\n';
+    cout << "Slot parkir: " << IndeksKendaraan + 1 << '\n';
+    cout << "Jam masuk: " << SlotParkir[IndeksKendaraan].JamMasuk << ':';
 
     if(SlotParkir[IndeksKendaraan].MenitMasuk < 10) {
         cout << '0';
     }
 
     cout << SlotParkir[IndeksKendaraan].MenitMasuk << '\n';
-
-    cout << "Jam keluar      : " << JamKeluar << ':';
+    cout << "Jam keluar: " << JamKeluar << ':';
 
     if(MenitKeluar < 10) {
         cout << '0';
     }
 
     cout << MenitKeluar << '\n';
-    cout << "Durasi parkir   : " << WaktuParkir << " jam\n";
-    cout << "Total biaya     : Rp" << BiayaParkir << '\n';
-    cout << "========================================\n";
+    cout << "Total waktu: " << WaktuParkir << " jam\n";
+    cout << "Total biaya: Rp" << BiayaParkir << '\n';
 
     TotalCheckout++;
     TotalKeuangan += BiayaParkir;
@@ -253,25 +222,19 @@ void CheckoutKendaraan() {
 }
 
 void MenampilkanSlot() {
-    cout << "\n========================================\n";
-    cout << "           STATUS SLOT PARKIR\n";
-    cout << "========================================\n";
+    cout << "\n===== STATUS SLOT PARKIR =====\n";
 
     for(int i = 0; i < 20; i++) {
-        cout << "Slot ke-" << i + 1 << " : ";
+        cout << "Slot ke-" << i + 1 << ": ";
 
         if(SlotParkir[i].ApakahPenuh == true) {
-            cout << "Terisi oleh "
-                 << SlotParkir[i].PlatNomor
-                 << " (" << SlotParkir[i].JenisKendaraan << ")";
+            cout << "Terisi oleh " << SlotParkir[i].PlatNomor << " (" << SlotParkir[i].JenisKendaraan << ")";
         } else {
             cout << "Tersedia";
         }
 
         cout << '\n';
     }
-
-    cout << "========================================\n";
 }
 
 void LaporanParkir() {
@@ -285,15 +248,11 @@ void LaporanParkir() {
 
     int SlotTersedia = 20 - SlotTerisi;
 
-    cout << "\n========================================\n";
-    cout << "             LAPORAN PARKIR\n";
-    cout << "========================================\n";
-    cout << "Total slot        : 20\n";
-    cout << "Slot terisi       : " << SlotTerisi << '\n';
-    cout << "Slot tersedia     : " << SlotTersedia << '\n';
-    cout << "Transaksi selesai : " << TotalCheckout << '\n';
-    cout << "Total pendapatan  : Rp" << TotalKeuangan << '\n';
-    cout << "========================================\n";
+    cout << "\n===== LAPORAN PARKIR =====\n";
+    cout << "Slot tersedia: " << SlotTersedia << '\n';
+    cout << "Slot terisi: " << SlotTerisi << '\n';
+    cout << "Transaksi selesai: " << TotalCheckout << '\n';
+    cout << "Jumlah pemasukan: Rp" << TotalKeuangan << '\n';
 }
 
 int main() {
@@ -302,15 +261,14 @@ int main() {
     int Pilihan;
 
     do {
-        cout << "\n========================================\n";
-        cout << "       PARKING MANAGEMENT SYSTEM\n";
-        cout << "========================================\n";
+        cout << "\n====================\n";
+        cout << "PARKING MANAGEMENT SYSTEM\n";
+        cout << "====================\n";
         cout << "1. Registrasi kendaraan\n";
-        cout << "2. Checkout kendaraan\n";
-        cout << "3. Melihat status slot parkir\n";
-        cout << "4. Melihat laporan parkir\n";
+        cout << "2. Checkout transaksi\n";
+        cout << "3. Melihat slot parkir\n";
+        cout << "4. Melihat laporan keuangan\n";
         cout << "5. Keluar dari program\n";
-        cout << "----------------------------------------\n";
         cout << "Pilih menu: ";
         cin >> Pilihan;
 
@@ -323,11 +281,10 @@ int main() {
         } else if(Pilihan == 4) {
             LaporanParkir();
         } else if(Pilihan == 5) {
-            cout << "\nProgram telah selesai. Terima kasih!\n";
+            cout << "\nProgram telah selesai.\n";
         } else {
-            cout << "\nPilihan tidak valid! Silakan pilih 1-5.\n";
+            cout << "\nAnda salah memasukkan angka!\n";
         }
-
     } while(Pilihan != 5);
 
     return 0;
