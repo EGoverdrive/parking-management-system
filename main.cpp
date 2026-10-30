@@ -1,3 +1,5 @@
+// MENCARI MOTOR OR MOBIL BERDASARJAN PLAT NUMBER
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -32,7 +34,8 @@ void printChoiceMessage()
          << "[2] Kendaraan Keluar\n"
          << "[3] Tampilkan Laporan Harian\n"
          << "[4] Lihat Kondisi Parkiran Saat Ini\n"
-         << "[5] Keluar Program\n";
+         << "[5] Keluar Program\n"
+         << "[6] Cari Kendaraan di parkiran\n";
     cout << "Pilih Opsi (1 - 5): ";
 
     return;
@@ -230,6 +233,27 @@ void printParkiran()
     return;
 }
 
+void findVehicle(){
+    string inputPlate;
+    bool isFinded = false;
+    cout << "Masukkan Plat Kendaraan: ";
+    getline(cin >> ws, inputPlate);
+
+    for(int i = 0; i < 20; i++){
+        if(parkingSpace[i].plate_number == inputPlate){
+            isFinded = true;
+            cout << "\n Output: Kendaraan ditemukan di nomor parkiran: " << i + 1 << "\n\n";
+            return;
+        }
+    }
+
+    if(!isFinded){
+        cout << "\nOutput: Kendaraan tidak ditemukan di parkiran :(\n\n";
+    }
+
+    return;
+}
+
 int main()
 {
     bool exit = false;
@@ -265,6 +289,10 @@ int main()
         case 5:
             cout << "byebye\n";
             exit = true;
+            break;
+        case 6:
+            cout << "\n===== CARI KENDARAAN DI PARKIRAN =====\n";
+            findVehicle();
             break;
         default:
             cout << "Invalid Options!!! Silakan pilih 1 - 5.\n\n";
